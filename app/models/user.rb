@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  validates :user_name, :password_digest, :session_token, presence: true
+  validates :user_name, :session_token, presence: true
   validates :user_name, :session_token, uniqueness: true
+  validates :password_digest, presence: { message: "password can't be blank"}
   validates :password, length: { minimum: 6 }, allow_nil: true
   after_initialize :ensure_session_token
 
@@ -31,5 +32,13 @@ class User < ApplicationRecord
 
   def ensure_session_token
     self.session_token ||= SecureRandom::urlsafe_base64(16)
+    # self.session_token = SecureRandom::urlsafe_base64(16) if self.session_token.nil?
+    #
+    # if self.session_token.nil?
+    #   return
+    # else
+    #   self.session_token = SecureRandom::urlsafe_base64(16)
+    # end
+
   end
 end

@@ -1,0 +1,22 @@
+<h1> Sign Up </h1>
+
+<ul>
+  <% if flash[:errors] %>
+    <% flash[:errors].each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  <% end %>
+</ul>
+
+<form class="" action="<%= users_url %>" method="post">
+
+  <label for="">
+    Username: <input type="text" name="user[user_name]">
+  </label>
+
+  <label for="">
+    Password: <input type="password" name="user[password]">
+  </label>
+
+  <input type="submit" value="Sign up!">
+</form>
