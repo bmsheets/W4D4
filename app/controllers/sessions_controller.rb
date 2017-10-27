@@ -1,4 +1,8 @@
 class SessionsController < ApplicationController
+
+  before_action :require_logged_out, only: [:new, :create]
+  before_action :require_logged_in, only: [:destroy]
+
   def new
     render :new
   end
@@ -10,9 +14,7 @@ class SessionsController < ApplicationController
     )
 
     if user
-      user.reset_session_token!
-      session[:session_token] = user.session_token
-      redirect_to cats_url
+      login_user!(user)
     else
       if flash.now[:errors]
         flash.now[:errors] << "Invalid credentials"
@@ -25,8 +27,6 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    current_user.reset_session_token! if current_user
-    session[:session_token] = nil
-    redirect_to new_session_url
+    logout!
   end
 end
