@@ -10,17 +10,25 @@
 
   <body>
     <header>
-      <!-- <%# if !current_user.nil? %> -->
-        <span>Logged in as: <%#= current_user.user_name %></span>
+      <% if !current_user.nil? %>
+        <span>Logged in as: <%= current_user.user_name %></span>
         <form action="<%= session_url %>" method="post">
+          <input type="hidden"
+                 name="authenticity_token"
+                 value="<%= form_authenticity_token %>">
+
           <input type="hidden" name="_method" value="delete">
           <input type="submit" value="Log Out">
         </form>
-      <!-- <%# else %> -->
+      <% else %>
         <form action="<%= new_session_url %>" method="get">
+          <input type="hidden"
+                 name="authenticity_token"
+                 value="<%= form_authenticity_token %>">
+
           <input type="submit" value="Log In">
         </form>
-      <!-- <%# end %> -->
+      <% end %>
     </header>
     <%= yield %>
   </body>

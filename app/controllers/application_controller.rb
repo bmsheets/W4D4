@@ -20,7 +20,6 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    puts "session token is " + session[:session_token].to_s
     return nil unless session[:session_token]
     User.find_by(session_token: session[:session_token])
   end
@@ -33,4 +32,8 @@ class ApplicationController < ActionController::Base
     redirect_to new_session_url unless logged_in?
   end
 
+  def require_owns_cat
+    c = current_user.cats.find_by(id: params[:id])
+    redirect_to cats_url if c.nil?
+  end
 end
